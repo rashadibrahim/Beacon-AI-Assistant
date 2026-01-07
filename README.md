@@ -270,6 +270,11 @@ k=2                      # Number of documents to retrieve
 - "Summarize the key points"
 - "Find information about [specific topic]"
 
+## ⚠️ Notes on Tooling
+
+- `final_answer` tool is currently **commented out** because the Groq-hosted model in use does not support forced tool calls. The agent now concludes a turn when it emits a response with no `tool_calls`; we execute tools when present and re-query until the model returns a plain answer.
+- If you switch to a provider/model that supports `tool_choice` forcing, you can re-enable `final_answer` to enforce a single, structured termination tool call.
+  
 ## 🔐 Security
 
 ### Important Notes
