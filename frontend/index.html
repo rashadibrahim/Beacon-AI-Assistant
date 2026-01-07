@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Beacon - AI Assistant</title>
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>" />
+  <link rel="stylesheet" href="./style.css" />
+</head>
+
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="logo-section">
+        <div class="logo-badge">🤖</div>
+        <div>
+          <h1>Beacon</h1>
+          <p class="muted">Navigate your knowledge with AI-powered search and conversation</p>
+        </div>
+      </div>
+      <div class="endpoint">API: <span id="api-base"></span></div>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <div class="panel-header">
+          <h2>Sessions</h2>
+          <button id="create-session" class="btn primary">New Session</button>
+        </div>
+        <div id="sessions" class="session-list"></div>
+      </section>
+
+      <section class="panel main-panel">
+        <div class="panel-section chat-section">
+          <div id="welcome-state" class="welcome-state">
+            <div class="welcome-content">
+              <div class="welcome-icon">🤖</div>
+              <h2>Welcome to Beacon</h2>
+              <p>Your intelligent guide to documents and conversations</p>
+              <div class="welcome-steps">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <div class="step-text">Create a new session or select an existing one from the left panel</div>
+                </div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <div class="step-text">Optionally enable RAG by providing a documents path</div>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <div class="step-text">Start typing your questions and get instant AI responses</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="messages" id="messages" style="display: none;"></div>
+
+          <form id="chat-form" class="chat-form row gap" style="display: none;">
+            <input id="chat-input" class="input flex" type="text" placeholder="Ask the agent..." autocomplete="off" />
+            <button class="btn primary" type="submit">Send</button>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- Session Details Modal -->
+    <div id="session-modal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Session Details</h2>
+          <button class="modal-close" onclick="document.getElementById('session-modal').style.display='none'">✕</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="modal-section">
+            <p class="muted" id="modal-session-meta">Select a session to view details.</p>
+          </div>
+
+          <div class="modal-section">
+            <label class="label">Documents path for RAG</label>
+            <div class="row gap">
+              <input id="rag-path" type="text" class="input flex" placeholder="e.g. C:/data/docs" />
+              <button id="enable-rag" class="btn" disabled>Enable RAG</button>
+            </div>
+            <p class="muted" id="rag-status"></p>
+          </div>
+
+          <div class="modal-section">
+            <label class="label">RAG description (optional)</label>
+            <textarea id="rag-description" class="input" rows="3"
+              placeholder="Describe what documents are in this path (e.g., 'Financial planning guides covering budgeting, savings, investments, and retirement')"></textarea>
+            <p class="muted">Help the agent understand when to use these documents by describing their content.</p>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button id="delete-session" class="btn danger" disabled>Delete Session</button>
+          <button class="btn" onclick="document.getElementById('session-modal').style.display='none'">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create Session Modal -->
+  <div id="create-modal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>New Session</h2>
+        <button class="modal-close" id="create-close">✕</button>
+      </div>
+      <form id="create-form">
+        <div class="modal-body">
+          <div class="modal-section">
+            <label class="label">Session name (optional)</label>
+            <input id="create-session-name" class="input" type="text" placeholder="Give this session a name" />
+          </div>
+
+          <div class="modal-section">
+            <label class="label">RAG documents path (optional)</label>
+            <input id="create-rag-path" class="input" type="text" placeholder="e.g. C:/data/docs" />
+            <p class="muted">If provided, RAG will be enabled after the session is created.</p>
+          </div>
+
+          <div class="modal-section">
+            <label class="label">RAG description (optional)</label>
+            <textarea id="create-rag-description" class="input" rows="3"
+              placeholder="Describe the documents (e.g., 'Company HR policies and benefits information')"></textarea>
+            <p class="muted">Help the agent know when to search these documents.</p>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn" id="create-cancel">Cancel</button>
+          <button type="submit" class="btn primary" id="create-submit">Create</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <template id="message-template">
+    <div class="message">
+      <div class="message-meta"></div>
+      <div class="message-body"></div>
+    </div>
+  </template>
+
+  <script type="module" src="./app.js"></script>
+</body>
+
+</html>
