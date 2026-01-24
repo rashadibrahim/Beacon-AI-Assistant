@@ -17,7 +17,7 @@ import asyncio
 import json
 from typing import AsyncGenerator
 
-app = FastAPI(title="Zeta Agent API", version="1.0.0")
+app = FastAPI(title="Beacon Agent API", version="1.0.0")
 
 # Allow browser apps to call the API
 app.add_middleware(
